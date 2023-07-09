@@ -12,8 +12,7 @@ class Player:
         self.running = running
         self.experience = experience
 
-
-
+# Teams class for the team properties
 class Teams:
     def __init__(self, name, teamplayers):
         self.name = name
@@ -35,9 +34,6 @@ class Teams:
             return self.bowlers.pop()
         else:
             return None
-    
-    def batting_order(self, batsmen):
-        return random.shuffle(batsmen)
     
 
 class Field:
@@ -69,13 +65,14 @@ class Umpire:
         
         return bowling_prob > batting_prob
 
+# Commentator stands independent of team or player properties, but announces toss, match information and consequently match result!
 class Commentator:
     def __init__(self,umpire):
         self.umpire = umpire
     
     def toss_info(self, country_1, country_2):
-        batting_team = bool(random.choice([country_1, country_2]))
-        return batting_team
+        batting_team = random.choice([country_1, country_2])
+        return batting_team == country_1
 
     def match_info(self, country_1, country_2, overs):
         print(f"\n{country_1.name} Versus {country_2.name}\nCaptain for {country_1.name}: {country_1.captain.name}\nCaptain for {country_2.name}: {country_2.captain.name}\nTotal Overs: {overs}\n\n\n")
@@ -105,6 +102,7 @@ class Commentator:
             print(f"{country} wins by {difference[0]} runs!")
 
 
+
 class Match:
     def __init__(self, country_1, country_2, field, max_overs):
         self.country_1 = country_1
@@ -116,6 +114,7 @@ class Match:
         self.commentator = Commentator(self.umpire)
         self.max_overs = max_overs
 
+    # initiator function for starting up the match
     def begin(self):
         self.country_1.captain_up(random.choice(self.country_1.teamplayers))
         self.country_2.captain_up(random.choice(self.country_2.teamplayers))
@@ -126,7 +125,7 @@ class Match:
         self.country_2.bowlers = self.country_2.teamplayers.copy()
         self.commentator.match_info(self.country_1, self.country_2, self.max_overs)
 
-        #for match start, let's go for toss
+        # toss as decider of who bats first
         team1 = self.commentator.toss_info(self.country_1, self.country_2)
         if team1:
             team2 = self.country_2
@@ -139,6 +138,7 @@ class Match:
         self.play_innings(team1,team2)
         self.commentator.inning_end()
 
+        # result of first one to bat
         setScore = self.commentator.umpire.score
 
         self.commentator.umpire.score = 0
@@ -150,6 +150,7 @@ class Match:
         self.play_innings(team2, team1)
         self.commentator.inning_end()
 
+        # result of score-chasers
         finalScore = self.commentator.umpire.score
 
         if setScore>finalScore:
@@ -160,7 +161,7 @@ class Match:
         else:
             print("\nIt's a DRAW.")
 
-    #match happen here, runs and wickets updated through continuity of the program
+    # each inning happen this way, runs and wickets updated through continuity of the program
     def play_innings(self,batsmen, bowlers):
         balls = 1
         over = 1
@@ -207,7 +208,7 @@ class Match:
             
 
 
-# demo simmulation between India and Australia
+# Demo simulation of a match between India and Australia
 
 teamIndia = []
 for each in range(0,10):
