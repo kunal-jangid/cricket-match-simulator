@@ -96,10 +96,12 @@ class Commentator:
         print(f"\n-------------Final score: {self.umpire.score} | Wickets: {self.umpire.wickets} | Overs: {self.umpire.overs} -------------\n")
 
     def match_end(self, country, difference):
-        if difference[1] == "all_out":
+        if difference[1] == "Wickets":
             print(f"{country} wins by {difference[0]} wickets!")
-        else:
+        elif difference[1] == "Runs":
             print(f"{country} wins by {difference[0]} runs!")
+        else:
+            None
 
 
 
@@ -147,22 +149,22 @@ class Match:
 
         print(f"\n\nNow it's {team2.name}'s turn to show us some batting!\n")
         #roles reversed, team2 does the batting
-        self.play_innings(team2, team1)
+        self.play_innings(team2, team1, setScore)
         self.commentator.inning_end()
 
         # result of score-chasers
         finalScore = self.commentator.umpire.score
 
         if setScore>finalScore:
-            self.commentator.match_end(team1.name, [setScore-finalScore, "High score"])
+            self.commentator.match_end(team1.name, [setScore-finalScore, "Runs"])
             
         elif finalScore>setScore:
-            self.commentator.match_end(team2.name, [finalScore-setScore, "High score"])
+            self.commentator.match_end(team2.name, [9-self.commentator.umpire.wickets, "Wickets"])
         else:
             print("\nIt's a DRAW.")
 
     # each inning happen this way, runs and wickets updated through continuity of the program
-    def play_innings(self,batsmen, bowlers):
+    def play_innings(self,batsmen, bowlers, chase=0):
         balls = 1
         over = 1
         bowler = bowlers.next_bowler()
@@ -202,6 +204,8 @@ class Match:
                 balls = 0
                 print(f"Starting over: {self.commentator.umpire.overs}")
             
+            if self.umpire.score > chase and chase != 0:
+                break
             self.commentator.match_info_current(balls)
             balls += 1
 
