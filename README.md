@@ -36,3 +36,6 @@ This class will simulate an individual cricket match. It will use objects of the
 ---
 ![screenshot_cricketMatchSimulator](https://github.com/kunal-jangid/cricket-match-simulator/assets/38829114/8089be6f-e146-412a-9b5d-74ccace82a3a)
 
+---
+
+Demo Link - https://youtu.be/OMMSAoOSf4E
